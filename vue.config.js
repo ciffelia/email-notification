@@ -1,3 +1,11 @@
 module.exports = {
-  lintOnSave: false
+  lintOnSave: false,
+  pages: {
+    index: 'src/renderer/main.js'
+  },
+  pluginOptions: {
+    electronBuilder: {
+      mainProcessFile: 'src/main/index.js'
+    }
+  }
 }
