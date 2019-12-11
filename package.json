@@ -12,9 +12,14 @@
   "main": "src/main/index.js",
   "dependencies": {
     "core-js": "^3.4.3",
+    "inbox": "^1.1.59",
+    "luxon": "^1.21.3",
+    "mailparser": "^2.7.7",
+    "uikit": "^3.2.4",
     "vue": "^2.6.10"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.7.5",
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-service": "^4.1.0",
