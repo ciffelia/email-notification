@@ -1,3 +1,4 @@
+import path from 'path'
 import { BrowserWindow, shell } from 'electron'
 
 class DetailWindowManager {
@@ -11,6 +12,7 @@ class DetailWindowManager {
       resizable: false,
       maximizable: false,
       fullscreenable: false,
+      icon: path.join(__static, 'icon.png'),
       show: false,
       frame: false,
       transparent: true,

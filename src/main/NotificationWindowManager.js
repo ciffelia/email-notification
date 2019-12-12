@@ -1,3 +1,4 @@
+import path from 'path'
 import { BrowserWindow, shell } from 'electron'
 
 class NotificationWindowManager {
@@ -16,6 +17,7 @@ class NotificationWindowManager {
       alwaysOnTop: true,
       fullscreenable: false,
       skipTaskbar: true,
+      icon: path.join(__static, 'icon.png'),
       show: false,
       frame: false,
       transparent: true,
