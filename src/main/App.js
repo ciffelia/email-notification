@@ -27,7 +27,9 @@ class App {
     app.once('ready', this._handleAppReady)
 
     await this._imap.init(config.imap)
+  }
 
+  async _initTray () {
     this._trayService.init()
     this._trayService.on('click', this._updateMessageList)
     this._trayService.on('exit', () => { app.exit() })
@@ -53,6 +55,8 @@ class App {
       }
     }
     if (!process.env.WEBPACK_DEV_SERVER_URL) createProtocol('app')
+
+    this._initTray()
 
     await this._notificationWindowManager.init()
 
