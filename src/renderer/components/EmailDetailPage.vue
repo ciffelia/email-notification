@@ -1,6 +1,11 @@
 <template>
   <EmailCard display-mode="detail">
-    <EmailHeader :message="message" windowDraggable/>
+    <EmailHeader
+      @click="closePage()"
+      :message="message"
+      showCloseButton
+      windowDraggable
+    />
     <EmailBody :message="message"/>
     <EmailFooter/>
   </EmailCard>
@@ -31,6 +36,9 @@ export default {
   methods: {
     updateMessage (e, message) {
       this.message = message
+    },
+    closePage () {
+      window.close()
     }
   },
   mounted () {

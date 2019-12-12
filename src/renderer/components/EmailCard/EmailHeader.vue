@@ -1,6 +1,11 @@
 <template>
   <div @click.prevent="$emit('click')" class="email-header uk-card-header" :class="{ windowDraggable }">
-    <h1 class="email-subject uk-card-title uk-text-center uk-text-truncate uk-margin-small-bottom">{{ subject }}</h1>
+    <div class="uk-grid-small uk-margin-small-bottom" uk-grid>
+      <div class="uk-width-expand">
+        <h1 class="email-subject uk-card-title uk-text-center uk-text-truncate">{{ subject }}</h1>
+      </div>
+      <button v-if="showCloseButton" @click="$emit('closeClick')" class="email-close uk-close-large" uk-close/>
+    </div>
     <table class="email-props uk-table uk-table-small uk-margin-remove-top uk-text-small">
       <tr>
         <td class="uk-table-shrink">Date</td>
@@ -25,6 +30,7 @@ export default {
   name: 'EmailHeader',
   props: {
     message: Object,
+    showCloseButton: Boolean,
     windowDraggable: Boolean
   },
   computed: {
@@ -56,6 +62,10 @@ export default {
 
   .windowDraggable {
     -webkit-app-region: drag;
+
+    .email-close {
+      -webkit-app-region: no-drag;
+    }
   }
 
   .email-subject {
