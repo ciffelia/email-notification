@@ -6,6 +6,9 @@
 </template>
 
 <script>
+import 'uikit'
+import 'uikit/dist/js/uikit-icons'
+
 import EmailNotificationPage from './EmailNotificationPage'
 import EmailDetailPage from './EmailDetailPage'
 
