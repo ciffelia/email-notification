@@ -7,6 +7,7 @@ import { ipcRenderer } from "electron"
       @mouseenter="hover = true"
       @mouseleave="hover = false"
     >
+      <EmailHeader v-if="messageList.length === 0"/>
       <EmailHeader
         @click="showMessageDetail(message)"
         v-for="message in messageList"

@@ -34,6 +34,8 @@ class App {
   }
 
   async _updateMessageList () {
+    this._notificationWindowManager.updateMessageList([])
+
     const unreadMessages = await this._imap.fetchUnreadMessages()
 
     // 新しい順に並び替える
