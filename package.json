@@ -9,7 +9,7 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps"
   },
-  "main": "src/main/index.js",
+  "main": "background.js",
   "dependencies": {
     "core-js": "^3.4.3",
     "inbox": "^1.1.59",
