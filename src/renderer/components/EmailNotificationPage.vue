@@ -1,6 +1,6 @@
 import { ipcRenderer } from "electron"
 <template>
-  <transition name="fade" @after-leave="hideWindow()">
+  <transition name="fade" @enter="showWindow()" @after-leave="hideWindow()">
     <EmailCard
       display-mode="notification"
       v-show="active || hover"
@@ -55,6 +55,9 @@ export default {
     },
     showMessage (message) {
       ipcRenderer.send('showMessage', message)
+    },
+    showWindow () {
+      remote.getCurrentWindow().show()
     },
     hideWindow () {
       remote.getCurrentWindow().hide()

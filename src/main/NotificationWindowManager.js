@@ -35,7 +35,6 @@ class NotificationWindowManager {
 
   updateMessageList (messageList) {
     this.window.webContents.send('updateMessageList', messageList)
-    this.window.show()
   }
 }
 
