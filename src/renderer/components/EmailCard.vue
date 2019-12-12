@@ -1,5 +1,10 @@
 <template>
-  <div class="email-card uk-card uk-card-default uk-flex uk-flex-column" :class="[`email-card-${displayMode}`]">
+  <div
+    class="email-card uk-card uk-card-default uk-flex uk-flex-column"
+    :class="[`email-card-${displayMode}`]"
+    @mouseenter="$emit('mouseenter')"
+    @mouseleave="$emit('mouseleave')"
+  >
     <slot/>
   </div>
 </template>
