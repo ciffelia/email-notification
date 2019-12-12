@@ -4,6 +4,7 @@ import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-buil
 import NotificationWindowManager from './NotificationWindowManager'
 import DetailWindowManager from './DetailWindowManager'
 import IMAPGateway from './IMAPGateway'
+import TrayService from './TrayService'
 import config from '../../config'
 
 class App {
@@ -18,6 +19,7 @@ class App {
     this.notificationWindowManager = new NotificationWindowManager(winURL)
     this.detailWindowManager = new DetailWindowManager(winURL)
 
+    this.trayService = new TrayService()
     this.imap = new IMAPGateway()
   }
 
@@ -25,6 +27,10 @@ class App {
     app.once('ready', this.handleAppReady)
 
     await this.imap.init(config.imap)
+
+    this.trayService.init()
+    this.trayService.on('click', this.updateMessageList)
+    this.trayService.on('exit', () => { app.exit() })
   }
 
   async updateMessageList () {
@@ -49,7 +55,6 @@ class App {
     await this.notificationWindowManager.init()
 
     this.imap.on('newMailReceived', this.updateMessageList)
-    await this.updateMessageList()
 
     ipcMain.on('showMessageDetail', (e, message) => {
       this.detailWindowManager.showMessage(message)
