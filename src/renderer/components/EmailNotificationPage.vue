@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     updateMessageList (e, messageList) {
-      this.messageList = messageList.reverse()
+      this.messageList = messageList
 
       this.active = true
 
