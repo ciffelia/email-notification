@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [8.x, 10.x, 12.x, 13.x]
+        node-version: [12.x, 13.x]
         os: [ubuntu-18.04, windows-2019, macOS-10.14]
 
     steps:
