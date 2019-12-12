@@ -48,12 +48,12 @@ class App {
 
     await this.notificationWindowManager.init()
 
+    this.imap.on('newMailReceived', this.updateMessageList)
+    await this.updateMessageList()
+
     ipcMain.on('showMessageDetail', (e, message) => {
       this.detailWindowManager.showMessage(message)
     })
-
-    this.imap.on('newMailReceived', this.updateMessageList)
-    await this.updateMessageList()
   }
 }
 
