@@ -9,40 +9,40 @@ import config from '../../config'
 
 class App {
   constructor () {
-    this.updateMessageList = this.updateMessageList.bind(this)
-    this.handleAppReady = this.handleAppReady.bind(this)
+    this._updateMessageList = this._updateMessageList.bind(this)
+    this._handleAppReady = this._handleAppReady.bind(this)
 
     // Scheme must be registered before the app is ready
     protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }])
 
     const winURL = process.env.WEBPACK_DEV_SERVER_URL || 'app://./index.html'
-    this.notificationWindowManager = new NotificationWindowManager(winURL)
-    this.detailWindowManager = new DetailWindowManager(winURL)
+    this._notificationWindowManager = new NotificationWindowManager(winURL)
+    this._detailWindowManager = new DetailWindowManager(winURL)
 
-    this.trayService = new TrayService()
-    this.imap = new IMAPGateway()
+    this._trayService = new TrayService()
+    this._imap = new IMAPGateway()
   }
 
   async init () {
-    app.once('ready', this.handleAppReady)
+    app.once('ready', this._handleAppReady)
 
-    await this.imap.init(config.imap)
+    await this._imap.init(config.imap)
 
-    this.trayService.init()
-    this.trayService.on('click', this.updateMessageList)
-    this.trayService.on('exit', () => { app.exit() })
+    this._trayService.init()
+    this._trayService.on('click', this._updateMessageList)
+    this._trayService.on('exit', () => { app.exit() })
   }
 
-  async updateMessageList () {
-    const unreadMessages = await this.imap.fetchUnreadMessages()
+  async _updateMessageList () {
+    const unreadMessages = await this._imap.fetchUnreadMessages()
 
     // 新しい順に並び替える
     const messageList = unreadMessages.reverse()
 
-    this.notificationWindowManager.updateMessageList(messageList)
+    this._notificationWindowManager.updateMessageList(messageList)
   }
 
-  async handleAppReady () {
+  async _handleAppReady () {
     if (process.env.NODE_ENV !== 'production' && !process.env.IS_TEST) {
       try {
         await installVueDevtools()
@@ -52,12 +52,12 @@ class App {
     }
     if (!process.env.WEBPACK_DEV_SERVER_URL) createProtocol('app')
 
-    await this.notificationWindowManager.init()
+    await this._notificationWindowManager.init()
 
-    this.imap.on('newMailReceived', this.updateMessageList)
+    this._imap.on('newMailReceived', this._updateMessageList)
 
     ipcMain.on('showMessageDetail', (e, message) => {
-      this.detailWindowManager.showMessage(message)
+      this._detailWindowManager.showMessage(message)
     })
   }
 }

@@ -3,8 +3,8 @@ import { BrowserWindow, shell } from 'electron'
 
 class DetailWindowManager {
   constructor (winURL) {
-    this.winURL = winURL
-    this.windows = new Set()
+    this._winURL = winURL
+    this._windows = new Set()
   }
 
   async showMessage (message) {
@@ -32,12 +32,12 @@ class DetailWindowManager {
     })
 
     newWindow.once('closed', () => {
-      this.windows.delete(newWindow)
+      this._windows.delete(newWindow)
     })
 
-    this.windows.add(newWindow)
+    this._windows.add(newWindow)
 
-    await newWindow.loadURL(this.winURL + '?displayMode=detail')
+    await newWindow.loadURL(this._winURL + '?displayMode=detail')
     newWindow.webContents.send('updateMessage', message)
   }
 }

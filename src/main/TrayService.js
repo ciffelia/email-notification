@@ -7,29 +7,29 @@ class TrayService extends EventEmitter {
     super()
 
     this.init = this.init.bind(this)
-    this.handleClick = this.handleClick.bind(this)
-    this.handleExitClick = this.handleExitClick.bind(this)
+    this._handleClick = this._handleClick.bind(this)
+    this._handleExitClick = this._handleExitClick.bind(this)
 
-    this.iconPath = path.join(__static, 'icon.png')
+    this._iconPath = path.join(__static, 'icon.png')
   }
 
   init () {
-    this.tray = new Tray(this.iconPath)
-    this.tray.setToolTip('email-notification')
+    this._tray = new Tray(this._iconPath)
+    this._tray.setToolTip('email-notification')
 
     const menu = Menu.buildFromTemplate([
-      { label: 'Exit', type: 'normal', click: this.handleExitClick }
+      { label: 'Exit', type: 'normal', click: this._handleExitClick }
     ])
-    this.tray.setContextMenu(menu)
+    this._tray.setContextMenu(menu)
 
-    this.tray.on('click', this.handleClick)
+    this._tray.on('click', this._handleClick)
   }
 
-  handleClick () {
+  _handleClick () {
     this.emit('click')
   }
 
-  handleExitClick () {
+  _handleExitClick () {
     this.emit('exit')
   }
 }

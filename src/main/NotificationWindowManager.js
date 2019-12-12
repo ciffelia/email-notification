@@ -3,11 +3,11 @@ import { BrowserWindow, shell } from 'electron'
 
 class NotificationWindowManager {
   constructor (winURL) {
-    this.winURL = winURL
+    this._winURL = winURL
   }
 
   async init () {
-    this.window = new BrowserWindow({
+    this._window = new BrowserWindow({
       resizable: false,
       movable: false,
       minimizable: false,
@@ -27,16 +27,16 @@ class NotificationWindowManager {
       }
     })
 
-    this.window.on('will-navigate', (e, url) => {
+    this._window.on('will-navigate', (e, url) => {
       shell.openExternal(url)
       e.preventDefault()
     })
 
-    await this.window.loadURL(this.winURL + '?displayMode=notification')
+    await this._window.loadURL(this._winURL + '?displayMode=notification')
   }
 
   updateMessageList (messageList) {
-    this.window.webContents.send('updateMessageList', messageList)
+    this._window.webContents.send('updateMessageList', messageList)
   }
 }
 

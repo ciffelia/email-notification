@@ -23,35 +23,35 @@ class IMAPGateway extends EventEmitter {
 
   _connect ({ host, port, ...options }) {
     return new Promise(resolve => {
-      this.imapClient = inbox.createConnection(port, host, options)
-      this.imapClient.on('new', this._handleNewMessage)
-      this.imapClient.once('connect', resolve)
-      this.imapClient.connect()
+      this._imapClient = inbox.createConnection(port, host, options)
+      this._imapClient.on('new', this._handleNewMessage)
+      this._imapClient.once('connect', resolve)
+      this._imapClient.connect()
     })
   }
 
   _disconnect () {
-    this.imapClient.off('new', this._handleNewMessage)
-    this.imapClient.close()
+    this._imapClient.off('new', this._handleNewMessage)
+    this._imapClient.close()
   }
 
   async _openMailbox (path, options) {
-    const _openMailBox = util.promisify(this.imapClient.openMailbox)
-    return _openMailBox.call(this.imapClient, path, options)
+    const _openMailBox = util.promisify(this._imapClient.openMailbox)
+    return _openMailBox.call(this._imapClient, path, options)
   }
 
   async _fetchUnreadMessageUids () {
-    const _search = util.promisify(this.imapClient.search)
-    return _search.call(this.imapClient, { unseen: true }, true)
+    const _search = util.promisify(this._imapClient.search)
+    return _search.call(this._imapClient, { unseen: true }, true)
   }
 
   async _fetchMessageData (uid) {
-    const _fetchData = util.promisify(this.imapClient.fetchData)
-    return _fetchData.call(this.imapClient, uid)
+    const _fetchData = util.promisify(this._imapClient.fetchData)
+    return _fetchData.call(this._imapClient, uid)
   }
 
   async _fetchMessageBody (uid) {
-    const stream = this.imapClient.createMessageStream(uid)
+    const stream = this._imapClient.createMessageStream(uid)
     const rawBody = await streamToBuffer(stream)
     return simpleParser(rawBody, { skipHtmlToText: true, skipImageLinks: true })
   }
