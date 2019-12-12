@@ -48,7 +48,7 @@ class App {
 
     await this.notificationWindowManager.init()
 
-    ipcMain.on('showMessage', (e, message) => {
+    ipcMain.on('showMessageDetail', (e, message) => {
       this.detailWindowManager.showMessage(message)
     })
 

@@ -8,7 +8,7 @@ import { ipcRenderer } from "electron"
       @mouseleave="hover = false"
     >
       <EmailHeader
-        @click="showMessage(message)"
+        @click="showMessageDetail(message)"
         v-for="message in messageList"
         :key="message.messageId"
         :message="message"
@@ -53,8 +53,8 @@ export default {
         resizeToContentAndMoveWindow('bottomRight')
       })
     },
-    showMessage (message) {
-      ipcRenderer.send('showMessage', message)
+    showMessageDetail (message) {
+      ipcRenderer.send('showMessageDetail', message)
     },
     showWindow () {
       remote.getCurrentWindow().show()
