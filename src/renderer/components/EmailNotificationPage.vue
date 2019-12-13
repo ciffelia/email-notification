@@ -8,6 +8,7 @@ import { ipcRenderer } from "electron"
       @mouseleave="hover = false"
     >
       <EmailHeader v-if="messageList === null" :message="null"/>
+      <EmailEmpty v-else-if="messageList.length === 0"/>
       <template v-else>
         <EmailHeader
           @click="showMessageDetail(message)"
@@ -25,11 +26,13 @@ import { ipcRenderer, remote } from 'electron'
 
 import resizeToContentAndMoveWindow from '../resizeToContentAndMoveWindow'
 import EmailCard from './EmailCard'
+import EmailEmpty from './EmailCard/EmailEmpty'
 import EmailHeader from './EmailCard/EmailHeader'
 
 export default {
   name: 'EmailNotificationPage',
   components: {
+    EmailEmpty,
     EmailCard,
     EmailHeader
   },
