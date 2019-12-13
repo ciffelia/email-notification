@@ -6,11 +6,16 @@
 export default {
   name: 'EmailBody',
   props: {
-    message: Object
+    message: Object,
+    loading: Boolean
   },
   computed: {
     body () {
-      return this.message?.textAsHtml || 'Loading...'
+      if (this.loading) {
+        return 'Loading...'
+      } else {
+        return this.message.textAsHtml
+      }
     }
   }
 }

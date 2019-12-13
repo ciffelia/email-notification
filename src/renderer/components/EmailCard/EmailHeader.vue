@@ -30,21 +30,34 @@ export default {
   name: 'EmailHeader',
   props: {
     message: Object,
+    loading: Boolean,
     showCloseButton: Boolean,
     windowDraggable: Boolean
   },
   computed: {
     from () {
-      return this.message?.from?.html || '- Someone -'
+      if (this.loading) {
+        return '- Someone -'
+      } else {
+        return this.message.from.html
+      }
     },
     to () {
-      return this.message?.to?.html || '- You -'
+      if (this.loading) {
+        return '- You -'
+      } else {
+        return this.message.to.html
+      }
     },
     subject () {
-      return this.message?.subject || 'Loading...'
+      if (this.loading) {
+        return 'Loading...'
+      } else {
+        return this.message.subject
+      }
     },
     date () {
-      if (!this.message?.date) {
+      if (this.loading) {
         return '- Someday -'
       } else {
         const date = DateTime.fromISO(this.message.date)

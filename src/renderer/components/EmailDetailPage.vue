@@ -1,12 +1,19 @@
 <template>
   <EmailCard display-mode="detail">
-    <EmailHeader
-      @click="closePage()"
-      :message="message"
-      showCloseButton
-      windowDraggable
-    />
-    <EmailBody :message="message"/>
+    <template>
+      <EmailHeader v-if="message === null" loading/>
+      <EmailHeader
+        v-else
+        @click="closePage()"
+        :message="message"
+        showCloseButton
+        windowDraggable
+      />
+    </template>
+    <template>
+      <EmailBody v-if="message === null" loading/>
+      <EmailBody v-else :message="message"/>
+    </template>
     <EmailFooter/>
   </EmailCard>
 </template>
@@ -30,7 +37,7 @@ export default {
   },
   data () {
     return {
-      message: {}
+      message: null
     }
   },
   methods: {

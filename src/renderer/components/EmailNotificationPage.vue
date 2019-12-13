@@ -7,7 +7,7 @@ import { ipcRenderer } from "electron"
       @mouseenter="hover = true"
       @mouseleave="hover = false"
     >
-      <EmailHeader v-if="messageList === null" :message="null"/>
+      <EmailHeader v-if="messageList === null" loading/>
       <EmailEmpty v-else-if="messageList.length === 0"/>
       <template v-else>
         <EmailHeader
@@ -38,7 +38,7 @@ export default {
   },
   data () {
     return {
-      messageList: [],
+      messageList: null,
       active: false,
       hover: false,
       inactivateTimeout: null
