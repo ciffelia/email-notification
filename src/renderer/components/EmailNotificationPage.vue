@@ -7,13 +7,15 @@ import { ipcRenderer } from "electron"
       @mouseenter="hover = true"
       @mouseleave="hover = false"
     >
-      <EmailHeader v-if="messageList.length === 0"/>
-      <EmailHeader
-        @click="showMessageDetail(message)"
-        v-for="message in messageList"
-        :key="message.messageId"
-        :message="message"
-      />
+      <EmailHeader v-if="messageList === null" :message="null"/>
+      <template v-else>
+        <EmailHeader
+          @click="showMessageDetail(message)"
+          v-for="message in messageList"
+          :key="message.messageId"
+          :message="message"
+        />
+      </template>
     </EmailCard>
   </transition>
 </template>

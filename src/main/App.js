@@ -38,7 +38,7 @@ class App {
   }
 
   async _updateMessageList () {
-    this._notificationWindowManager.updateMessageList([])
+    this._notificationWindowManager.updateMessageList(null)
 
     const unreadMessages = await this._imap.fetchUnreadMessages()
 
