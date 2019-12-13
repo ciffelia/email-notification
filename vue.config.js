@@ -1,3 +1,5 @@
+const glob = require('glob')
+
 module.exports = {
   lintOnSave: false,
   pages: {
@@ -5,7 +7,8 @@ module.exports = {
   },
   pluginOptions: {
     electronBuilder: {
-      mainProcessFile: 'src/main/index.js'
+      mainProcessFile: 'src/main/index.js',
+      mainProcessWatch: glob.sync('@(src/main/**/*|public/**/*)')
     }
   }
 }
