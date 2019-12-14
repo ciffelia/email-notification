@@ -8,7 +8,7 @@ module.exports = {
   pluginOptions: {
     electronBuilder: {
       mainProcessFile: 'src/main/index.js',
-      mainProcessWatch: glob.sync('@(src/main/**/*|public/**/*)')
+      mainProcessWatch: glob.sync('{src/main/**/*,public/**/*}')
     }
   }
 }
