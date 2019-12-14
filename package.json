@@ -17,7 +17,7 @@
     "luxon": "^1.21.3",
     "mailparser": "^2.7.7",
     "uikit": "^3.2.4",
-    "vue": "^2.6.10"
+    "vue": "^2.6.11"
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.7.5",
@@ -38,7 +38,7 @@
     "sass": "^1.23.7",
     "sass-loader": "^8.0.0",
     "vue-cli-plugin-electron-builder": "^1.4.3",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.11"
   },
   "browserslist": [
     "Electron 7.1.4"
