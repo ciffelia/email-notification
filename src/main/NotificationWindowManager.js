@@ -28,6 +28,8 @@ class NotificationWindowManager {
       }
     })
 
+    if (!isProduction) this._window.webContents.openDevTools()
+
     this._window.on('will-navigate', (e, url) => {
       shell.openExternal(url)
       e.preventDefault()
