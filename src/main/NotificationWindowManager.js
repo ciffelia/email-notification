@@ -1,5 +1,6 @@
 import path from 'path'
 import { BrowserWindow, shell } from 'electron'
+import isProduction from './isProduction'
 
 class NotificationWindowManager {
   constructor (winURL) {
@@ -22,7 +23,7 @@ class NotificationWindowManager {
       frame: false,
       transparent: true,
       webPreferences: {
-        devTools: process.env.NODE_ENV !== 'production',
+        devTools: !isProduction,
         nodeIntegration: true
       }
     })

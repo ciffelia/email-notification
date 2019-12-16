@@ -5,6 +5,7 @@ import NotificationWindowManager from './NotificationWindowManager'
 import DetailWindowManager from './DetailWindowManager'
 import IMAPGateway from './IMAPGateway'
 import TrayService from './TrayService'
+import isProduction from './isProduction'
 
 class App {
   constructor (config) {
@@ -54,7 +55,7 @@ class App {
   }
 
   async _handleAppReady () {
-    if (process.env.NODE_ENV !== 'production' && !process.env.IS_TEST) {
+    if (!isProduction && !process.env.IS_TEST) {
       try {
         await installVueDevtools()
       } catch (e) {

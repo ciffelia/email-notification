@@ -1,5 +1,6 @@
 import path from 'path'
 import { BrowserWindow, shell } from 'electron'
+import isProduction from './isProduction'
 
 class DetailWindowManager {
   constructor (winURL) {
@@ -17,7 +18,7 @@ class DetailWindowManager {
       frame: false,
       transparent: true,
       webPreferences: {
-        devTools: process.env.NODE_ENV !== 'production',
+        devTools: !isProduction,
         nodeIntegration: true
       }
     })
