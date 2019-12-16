@@ -11,6 +11,7 @@ class TrayService extends EventEmitter {
     this._handleExitClick = this._handleExitClick.bind(this)
 
     this._iconPath = path.join(__static, 'icon.png')
+    this._iconWithBadgePath = path.join(__static, 'icon-with-badge.png')
   }
 
   init () {
@@ -23,6 +24,14 @@ class TrayService extends EventEmitter {
     this._tray.setContextMenu(menu)
 
     this._tray.on('click', this._handleClick)
+  }
+
+  showBadge () {
+    this._tray.setImage(this._iconWithBadgePath)
+  }
+
+  hideBadge () {
+    this._tray.setImage(this._iconPath)
   }
 
   _handleClick () {
