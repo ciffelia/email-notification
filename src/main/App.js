@@ -10,6 +10,7 @@ import isProduction from './isProduction'
 class App {
   constructor (config) {
     this._updateMessageList = this._updateMessageList.bind(this)
+    this._updateTrayBadge = this._updateTrayBadge.bind(this)
     this._handleAppReady = this._handleAppReady.bind(this)
     this._handleImapError = this._handleImapError.bind(this)
 
@@ -75,6 +76,7 @@ class App {
     this._imap = new IMAPGateway()
 
     this._imap.on('newMailAvailable', this._updateMessageList)
+    this._imap.on('mailboxUpdated', this._updateTrayBadge)
     this._imap.on('error', this._handleImapError)
 
     await this._imap.init(this.config.imap)
@@ -89,8 +91,11 @@ class App {
 
     this._notificationWindowManager.updateMessageList(messageList)
     this._notificationWindowManager.updateLoading(false)
+  }
 
-    if (messageList.length === 0) {
+  async _updateTrayBadge () {
+    const unreadCount = await this._imap.countUnreadMessages()
+    if (unreadCount === 0) {
       this._trayService.hideBadge()
     } else {
       this._trayService.showBadge()

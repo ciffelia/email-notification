@@ -17,6 +17,11 @@ class IMAPGateway extends EventEmitter {
     await this._openMailbox('INBOX', true)
   }
 
+  async countUnreadMessages () {
+    const uids = await this._fetchUnreadMessageUids()
+    return uids.length
+  }
+
   async fetchUnreadMessageHeaders () {
     const uids = await this._fetchUnreadMessageUids()
     const messages = await this._fetchMessages(uids, 'HEADER.FIELDS (From To Date Subject)')
