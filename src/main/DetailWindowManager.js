@@ -8,7 +8,7 @@ class DetailWindowManager {
     this._windows = new Set()
   }
 
-  async showMessage (message) {
+  async createWindow () {
     const newWindow = new BrowserWindow({
       resizable: false,
       maximizable: false,
@@ -39,7 +39,12 @@ class DetailWindowManager {
     this._windows.add(newWindow)
 
     await newWindow.loadURL(this._winURL + '?displayMode=detail')
-    newWindow.webContents.send('updateMessage', message)
+
+    return newWindow
+  }
+
+  showMessage (window, message) {
+    window.webContents.send('updateMessage', message)
   }
 }
 
