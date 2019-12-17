@@ -58,6 +58,7 @@ class IMAPGateway extends EventEmitter {
       this._imapConnection.once('ready', readyHandler)
       this._imapConnection.once('error', errorHandler)
 
+      this._imapConnection.on('mail', this._handleNewMail)
       this._imapConnection.on('mail', this._handleMailboxUpdate)
       this._imapConnection.on('expunge', this._handleMailboxUpdate)
       this._imapConnection.on('update', this._handleMailboxUpdate)
@@ -68,6 +69,7 @@ class IMAPGateway extends EventEmitter {
   }
 
   _disconnect () {
+    this._imapConnection.off('mail', this._handleNewMail)
     this._imapConnection.off('mail', this._handleMailboxUpdate)
     this._imapConnection.off('expunge', this._handleMailboxUpdate)
     this._imapConnection.off('update', this._handleMailboxUpdate)
@@ -145,6 +147,10 @@ class IMAPGateway extends EventEmitter {
 
   _handleMailboxUpdate () {
     this.emit('mailboxUpdated')
+  }
+
+  _handleNewMail () {
+    this.emit('newMailAvailable')
   }
 
   _handleError (err) {
