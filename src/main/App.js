@@ -14,23 +14,15 @@ class App {
     this._handleImapError = this._handleImapError.bind(this)
 
     this.config = config
-
-    const winURL = process.env.WEBPACK_DEV_SERVER_URL || 'app://./index.html'
-    this._notificationWindowManager = new NotificationWindowManager(winURL)
-    this._detailWindowManager = new DetailWindowManager(winURL)
-
-    this._trayService = new TrayService()
-    this._imap = new IMAPGateway()
+    this.winURL = process.env.WEBPACK_DEV_SERVER_URL || 'app://./index.html'
   }
 
-  async init () {
+  init () {
     if (app.isReady()) {
       this._handleAppReady()
     } else {
       app.once('ready', this._handleAppReady)
     }
-
-    await this._imap.init(this.config.imap)
   }
 
   async _handleAppReady () {
@@ -43,21 +35,44 @@ class App {
     }
     if (!process.env.WEBPACK_DEV_SERVER_URL) createProtocol('app')
 
-    this._initTray()
+    await Promise.all([
+      this._initNotificationWindow(),
+      this._initDetailWindow(),
+      this._initTray(),
+      this._initImap()
+    ])
+  }
+
+  async _initNotificationWindow () {
+    this._notificationWindowManager = new NotificationWindowManager(this.winURL)
 
     await this._notificationWindowManager.init()
+
     ipcMain.on('showMessageDetail', (e, message) => {
       this._detailWindowManager.showMessage(message)
     })
+  }
 
-    this._imap.on('serverEventOccurred', this._updateMessageList)
-    this._imap.on('error', this._handleImapError)
+  async _initDetailWindow () {
+    this._detailWindowManager = new DetailWindowManager(this.winURL)
   }
 
   async _initTray () {
-    this._trayService.init()
+    this._trayService = new TrayService()
+
     this._trayService.on('click', this._updateMessageList)
     this._trayService.on('exit', () => { app.exit() })
+
+    this._trayService.init()
+  }
+
+  async _initImap () {
+    this._imap = new IMAPGateway()
+
+    this._imap.on('serverEventOccurred', this._updateMessageList)
+    this._imap.on('error', this._handleImapError)
+
+    await this._imap.init(this.config.imap)
   }
 
   async _updateMessageList () {
@@ -83,7 +98,7 @@ class App {
     this._imap._disconnect()
 
     setTimeout(() => {
-      this._imap.init(this.config.imap)
+      this._initImap()
     }, 3000)
   }
 }

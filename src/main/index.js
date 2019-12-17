@@ -11,5 +11,5 @@ import loadConfig from './loadConfig'
   const config = await loadConfig()
 
   const app = new App(config)
-  await app.init()
+  app.init()
 })()
