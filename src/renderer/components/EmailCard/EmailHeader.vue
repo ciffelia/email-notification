@@ -39,28 +39,28 @@ export default {
       if (this.loading) {
         return '- Someone -'
       } else {
-        return this.message.from.html
+        return this.message.body.from.html
       }
     },
     to () {
       if (this.loading) {
         return '- You -'
       } else {
-        return this.message.to.html
+        return this.message.body.to.html
       }
     },
     subject () {
       if (this.loading) {
         return 'Loading...'
       } else {
-        return this.message.subject
+        return this.message.body.subject
       }
     },
     date () {
       if (this.loading) {
         return '- Someday -'
       } else {
-        const date = DateTime.fromISO(this.message.date)
+        const date = DateTime.fromISO(this.message.body.date)
         return `${date.toRelative()} - ${date.toLocaleString(DateTime.DATETIME_SHORT)}`
       }
     }

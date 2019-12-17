@@ -14,7 +14,7 @@ export default {
       if (this.loading) {
         return 'Loading...'
       } else {
-        return this.message.textAsHtml
+        return this.message.body.textAsHtml
       }
     }
   }

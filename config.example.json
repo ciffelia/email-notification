@@ -2,10 +2,8 @@
   "imap": {
     "host": "imap.example.com",
     "port": 993,
-    "secureConnection": true,
-    "auth": {
-      "user": "example@example.com",
-      "pass": "password"
-    }
+    "tls": true,
+    "user": "example@example.com",
+    "password": "password"
   }
 }

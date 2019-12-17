@@ -11,6 +11,7 @@ class App {
   constructor (config) {
     this._updateMessageList = this._updateMessageList.bind(this)
     this._handleAppReady = this._handleAppReady.bind(this)
+    this._handleImapError = this._handleImapError.bind(this)
 
     this.config = config
 
@@ -54,6 +55,17 @@ class App {
     }
   }
 
+  _handleImapError (err) {
+    console.warn('IMAP Error occurred. Reconnecting in 3 seconds.')
+    console.warn(err)
+
+    this._imap._disconnect()
+
+    setTimeout(() => {
+      this._imap.init(this.config.imap)
+    }, 3000)
+  }
+
   async _handleAppReady () {
     if (!isProduction && !process.env.IS_TEST) {
       try {
@@ -67,12 +79,12 @@ class App {
     this._initTray()
 
     await this._notificationWindowManager.init()
-
-    this._imap.on('newMailReceived', this._updateMessageList)
-
     ipcMain.on('showMessageDetail', (e, message) => {
       this._detailWindowManager.showMessage(message)
     })
+
+    this._imap.on('serverEventOccurred', this._updateMessageList)
+    this._imap.on('error', this._handleImapError)
   }
 }
 
