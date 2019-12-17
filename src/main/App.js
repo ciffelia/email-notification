@@ -33,6 +33,27 @@ class App {
     await this._imap.init(this.config.imap)
   }
 
+  async _handleAppReady () {
+    if (!isProduction && !process.env.IS_TEST) {
+      try {
+        await installVueDevtools()
+      } catch (e) {
+        console.error('Vue Devtools failed to install:', e.toString())
+      }
+    }
+    if (!process.env.WEBPACK_DEV_SERVER_URL) createProtocol('app')
+
+    this._initTray()
+
+    await this._notificationWindowManager.init()
+    ipcMain.on('showMessageDetail', (e, message) => {
+      this._detailWindowManager.showMessage(message)
+    })
+
+    this._imap.on('serverEventOccurred', this._updateMessageList)
+    this._imap.on('error', this._handleImapError)
+  }
+
   async _initTray () {
     this._trayService.init()
     this._trayService.on('click', this._updateMessageList)
@@ -64,27 +85,6 @@ class App {
     setTimeout(() => {
       this._imap.init(this.config.imap)
     }, 3000)
-  }
-
-  async _handleAppReady () {
-    if (!isProduction && !process.env.IS_TEST) {
-      try {
-        await installVueDevtools()
-      } catch (e) {
-        console.error('Vue Devtools failed to install:', e.toString())
-      }
-    }
-    if (!process.env.WEBPACK_DEV_SERVER_URL) createProtocol('app')
-
-    this._initTray()
-
-    await this._notificationWindowManager.init()
-    ipcMain.on('showMessageDetail', (e, message) => {
-      this._detailWindowManager.showMessage(message)
-    })
-
-    this._imap.on('serverEventOccurred', this._updateMessageList)
-    this._imap.on('error', this._handleImapError)
   }
 }
 
