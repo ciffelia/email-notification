@@ -41,6 +41,10 @@ class NotificationWindowManager {
   updateMessageList (messageList) {
     this._window.webContents.send('updateMessageList', messageList)
   }
+
+  updateLoading (loading) {
+    this._window.webContents.send('updateLoading', loading)
+  }
 }
 
 export default NotificationWindowManager

@@ -81,13 +81,14 @@ class App {
   }
 
   async _updateMessageList () {
-    this._notificationWindowManager.updateMessageList(null)
+    this._notificationWindowManager.updateLoading(true)
 
     const unreadMessages = await this._imap.fetchUnreadMessageHeaders()
     // 新しい順に並び替える
     const messageList = unreadMessages.reverse()
 
     this._notificationWindowManager.updateMessageList(messageList)
+    this._notificationWindowManager.updateLoading(false)
 
     if (messageList.length === 0) {
       this._trayService.hideBadge()

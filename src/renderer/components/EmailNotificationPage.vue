@@ -7,7 +7,7 @@ import { ipcRenderer } from "electron"
       @mouseenter="hover = true"
       @mouseleave="hover = false"
     >
-      <EmailHeader v-if="messageList === null" loading/>
+      <EmailHeader v-if="loading" loading/>
       <EmailEmpty v-else-if="messageList.length === 0"/>
       <template v-else>
         <EmailHeader
@@ -38,7 +38,8 @@ export default {
   },
   data () {
     return {
-      messageList: null,
+      loading: true,
+      messageList: [],
       active: false,
       hover: false,
       inactivateTimeout: null
@@ -47,7 +48,13 @@ export default {
   methods: {
     updateMessageList (e, messageList) {
       this.messageList = messageList
-
+      this.activate()
+    },
+    updateLoading (e, loading) {
+      this.loading = loading
+      this.activate()
+    },
+    activate () {
       this.active = true
 
       clearTimeout(this.inactivateTimeout)
@@ -71,9 +78,11 @@ export default {
   },
   mounted () {
     ipcRenderer.on('updateMessageList', this.updateMessageList)
+    ipcRenderer.on('updateLoading', this.updateLoading)
   },
   beforeDestroy () {
     ipcRenderer.off('updateMessageList', this.updateMessageList)
+    ipcRenderer.off('updateLoading', this.updateLoading)
   }
 }
 </script>
