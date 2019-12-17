@@ -8,7 +8,7 @@ class IMAPGateway extends EventEmitter {
   constructor () {
     super()
 
-    this._handleServerEvent = this._handleServerEvent.bind(this)
+    this._handleMailboxUpdate = this._handleMailboxUpdate.bind(this)
     this._handleError = this._handleError.bind(this)
   }
 
@@ -58,9 +58,9 @@ class IMAPGateway extends EventEmitter {
       this._imapConnection.once('ready', readyHandler)
       this._imapConnection.once('error', errorHandler)
 
-      this._imapConnection.on('mail', this._handleServerEvent)
-      this._imapConnection.on('expunge', this._handleServerEvent)
-      this._imapConnection.on('update', this._handleServerEvent)
+      this._imapConnection.on('mail', this._handleMailboxUpdate)
+      this._imapConnection.on('expunge', this._handleMailboxUpdate)
+      this._imapConnection.on('update', this._handleMailboxUpdate)
       this._imapConnection.on('error', this._handleError)
 
       this._imapConnection.connect()
@@ -68,9 +68,9 @@ class IMAPGateway extends EventEmitter {
   }
 
   _disconnect () {
-    this._imapConnection.off('mail', this._handleServerEvent)
-    this._imapConnection.off('expunge', this._handleServerEvent)
-    this._imapConnection.off('update', this._handleServerEvent)
+    this._imapConnection.off('mail', this._handleMailboxUpdate)
+    this._imapConnection.off('expunge', this._handleMailboxUpdate)
+    this._imapConnection.off('update', this._handleMailboxUpdate)
     this._imapConnection.off('error', this._handleError)
 
     this._imapConnection.destroy()
@@ -143,8 +143,8 @@ class IMAPGateway extends EventEmitter {
     delete body.buffer
   }
 
-  _handleServerEvent () {
-    this.emit('serverEventOccurred')
+  _handleMailboxUpdate () {
+    this.emit('mailboxUpdated')
   }
 
   _handleError (err) {

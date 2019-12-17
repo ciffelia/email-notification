@@ -74,7 +74,7 @@ class App {
   async _initImap () {
     this._imap = new IMAPGateway()
 
-    this._imap.on('serverEventOccurred', this._updateMessageList)
+    this._imap.on('mailboxUpdated', this._updateMessageList)
     this._imap.on('error', this._handleImapError)
 
     await this._imap.init(this.config.imap)
