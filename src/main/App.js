@@ -39,9 +39,10 @@ class App {
     await Promise.all([
       this._initNotificationWindow(),
       this._initDetailWindow(),
-      this._initTray(),
-      this._initImap()
+      this._initTray()
     ])
+
+    await this._initImap()
   }
 
   async _initNotificationWindow () {
@@ -80,6 +81,8 @@ class App {
     this._imap.on('error', this._handleImapError)
 
     await this._imap.init(this.config.imap)
+
+    await this._updateTrayBadge()
   }
 
   async _updateMessageList () {
