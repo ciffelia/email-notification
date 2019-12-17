@@ -40,7 +40,6 @@ class IMAPGateway extends EventEmitter {
 
       const readyHandler = () => {
         this._imapConnection.off('error', errorHandler)
-        this._imapConnection.on('error', this._handleError)
         resolve()
       }
       const errorHandler = err => {
@@ -54,17 +53,19 @@ class IMAPGateway extends EventEmitter {
       this._imapConnection.on('mail', this._handleServerEvent)
       this._imapConnection.on('expunge', this._handleServerEvent)
       this._imapConnection.on('update', this._handleServerEvent)
+      this._imapConnection.on('error', this._handleError)
 
       this._imapConnection.connect()
     })
   }
 
   _disconnect () {
-    this._imapConnection.end()
     this._imapConnection.off('mail', this._handleServerEvent)
     this._imapConnection.off('expunge', this._handleServerEvent)
     this._imapConnection.off('update', this._handleServerEvent)
     this._imapConnection.off('error', this._handleError)
+
+    this._imapConnection.destroy()
   }
 
   async _openMailbox (path, readOnly) {
