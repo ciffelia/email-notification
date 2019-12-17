@@ -60,7 +60,7 @@ export default {
       })
     },
     showMessageDetail (message) {
-      ipcRenderer.send('showMessageDetail', message)
+      ipcRenderer.send('showMessageDetail', message.attributes.uid)
     },
     showWindow () {
       remote.getCurrentWindow().show()

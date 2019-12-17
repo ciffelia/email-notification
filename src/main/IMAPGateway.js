@@ -17,14 +17,22 @@ class IMAPGateway extends EventEmitter {
     await this._openMailbox('INBOX', true)
   }
 
-  async fetchUnreadMessages () {
+  async fetchUnreadMessageHeaders () {
     const uids = await this._fetchUnreadMessageUids()
-    const messages = await this._fetchMessages(uids)
+    const messages = await this._fetchMessages(uids, 'HEADER.FIELDS (From To Date Subject)')
 
     return messages.map(({ attributes, bodies }) => ({
       attributes,
       body: bodies[0].parsed
     }))
+  }
+
+  async fetchMessage (uid) {
+    const messages = await this._fetchMessages(uid)
+    return {
+      attributes: messages[0].attributes,
+      body: messages[0].bodies[0].parsed
+    }
   }
 
   _connect (config) {

@@ -48,8 +48,9 @@ class App {
 
     await this._notificationWindowManager.init()
 
-    ipcMain.on('showMessageDetail', (e, message) => {
-      this._detailWindowManager.showMessage(message)
+    ipcMain.on('showMessageDetail', async (e, uid) => {
+      const message = await this._imap.fetchMessage(uid)
+      await this._detailWindowManager.showMessage(message)
     })
   }
 
@@ -78,7 +79,7 @@ class App {
   async _updateMessageList () {
     this._notificationWindowManager.updateMessageList(null)
 
-    const unreadMessages = await this._imap.fetchUnreadMessages()
+    const unreadMessages = await this._imap.fetchUnreadMessageHeaders()
     // 新しい順に並び替える
     const messageList = unreadMessages.reverse()
 
