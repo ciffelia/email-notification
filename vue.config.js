@@ -1,5 +1,3 @@
-const glob = require('glob')
-
 module.exports = {
   lintOnSave: false,
   pages: {
