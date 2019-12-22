@@ -28,7 +28,7 @@
     "babel-eslint": "^10.0.3",
     "electron": "^7.1.7",
     "electron-icon-builder": "^1.0.2",
-    "eslint": "^6.7.2",
+    "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.19.1",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
