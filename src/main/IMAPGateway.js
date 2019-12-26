@@ -9,6 +9,7 @@ class IMAPGateway extends EventEmitter {
     super()
 
     this._handleMailboxUpdate = this._handleMailboxUpdate.bind(this)
+    this._handleNewMail = this._handleNewMail.bind(this)
     this._handleError = this._handleError.bind(this)
 
     this.config = config
