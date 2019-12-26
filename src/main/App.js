@@ -50,10 +50,10 @@ class App {
 
     await this._notificationWindowManager.init()
 
-    ipcMain.on('showMessageDetail', async (e, uid) => {
+    ipcMain.on('showMessageDetail', async (e, { accountId, uid }) => {
       const [window, message] = await Promise.all([
         this._detailWindowManager.createWindow(),
-        this._imap.fetchMessage(uid)
+        this._imaps[accountId].fetchMessage(uid)
       ])
 
       this._detailWindowManager.showMessage(window, message)
@@ -74,13 +74,25 @@ class App {
   }
 
   async _initImap () {
-    this._imap = new IMAPGateway(this.config.imap)
+    this._imaps = []
 
-    this._imap.on('newMailAvailable', this._updateMessageList)
-    this._imap.on('mailboxUpdated', this._updateTrayBadge)
-    this._imap.on('error', this._handleImapError)
+    for (const imapConfig of this.config.imap) {
+      const imap = new IMAPGateway(imapConfig)
 
-    await this._imap.init()
+      imap.on('newMailAvailable', this._updateMessageList)
+      imap.on('mailboxUpdated', this._updateTrayBadge)
+      imap.on('error', err => {
+        this._handleImapError(err, imap)
+      })
+
+      try {
+        await imap.init()
+      } catch {
+        // Errors will be caught in _handleImapError
+      }
+
+      this._imaps.push(imap)
+    }
 
     await this._updateTrayBadge()
   }
@@ -88,16 +100,34 @@ class App {
   async _updateMessageList () {
     this._notificationWindowManager.updateLoading(true)
 
-    const unreadMessages = await this._imap.fetchUnreadMessageHeaders()
-    // 新しい順に並び替える
-    unreadMessages.reverse()
+    const unreadMessages = []
+
+    for (const [i, imap] of this._imaps.entries()) {
+      if (!imap.isReady) continue
+
+      const messages = await imap.fetchUnreadMessageHeaders()
+      unreadMessages.push(
+        ...messages.map(message => ({ imapAccountId: i, ...message }))
+      )
+    }
+
+    // 新しい順(日時降順)に並び替える
+    unreadMessages.sort((a, b) => {
+      return b.body.date - a.body.date
+    })
 
     this._notificationWindowManager.updateMessageList(unreadMessages)
     this._notificationWindowManager.updateLoading(false)
   }
 
   async _updateTrayBadge () {
-    const unreadCount = await this._imap.countUnreadMessages()
+    let unreadCount = 0
+
+    for (const imap of this._imaps) {
+      if (!imap.isReady) continue
+      unreadCount += await imap.countUnreadMessages()
+    }
+
     if (unreadCount === 0) {
       this._trayService.hideBadge()
     } else {
@@ -105,14 +135,20 @@ class App {
     }
   }
 
-  _handleImapError (err) {
+  _handleImapError (err, imap) {
     console.warn('IMAP Error occurred. Reconnecting in 3 seconds.')
     console.warn(err)
 
-    this._imap.terminate()
+    imap.terminate()
 
     setTimeout(async () => {
-      await this._imap.init()
+      try {
+        await imap.init()
+      } catch {
+        // Errors will be caught in _handleImapError again
+        return
+      }
+
       await this._updateTrayBadge()
     }, 3000)
   }
