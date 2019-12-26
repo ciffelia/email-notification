@@ -10,9 +10,11 @@ class IMAPGateway extends EventEmitter {
 
     this._handleMailboxUpdate = this._handleMailboxUpdate.bind(this)
     this._handleNewMail = this._handleNewMail.bind(this)
+    this._handleClose = this._handleClose.bind(this)
     this._handleError = this._handleError.bind(this)
 
     this.config = config
+    this.isReady = false
   }
 
   async init () {
@@ -62,6 +64,7 @@ class IMAPGateway extends EventEmitter {
 
       const readyHandler = () => {
         this._imapConnection.off('error', errorHandler)
+        this.isReady = true
         resolve()
       }
       const errorHandler = err => {
@@ -76,6 +79,7 @@ class IMAPGateway extends EventEmitter {
       this._imapConnection.on('mail', this._handleMailboxUpdate)
       this._imapConnection.on('expunge', this._handleMailboxUpdate)
       this._imapConnection.on('update', this._handleMailboxUpdate)
+      this._imapConnection.on('close', this._handleClose)
       this._imapConnection.on('error', this._handleError)
 
       this._imapConnection.connect()
@@ -87,6 +91,7 @@ class IMAPGateway extends EventEmitter {
     this._imapConnection.off('mail', this._handleMailboxUpdate)
     this._imapConnection.off('expunge', this._handleMailboxUpdate)
     this._imapConnection.off('update', this._handleMailboxUpdate)
+    this._imapConnection.off('close', this._handleClose)
     this._imapConnection.off('error', this._handleError)
 
     this._imapConnection.destroy()
@@ -165,6 +170,10 @@ class IMAPGateway extends EventEmitter {
 
   _handleNewMail () {
     this.emit('newMailAvailable')
+  }
+
+  _handleClose () {
+    this.isReady = false
   }
 
   _handleError (err) {
