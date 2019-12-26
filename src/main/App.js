@@ -74,13 +74,13 @@ class App {
   }
 
   async _initImap () {
-    this._imap = new IMAPGateway()
+    this._imap = new IMAPGateway(this.config.imap)
 
     this._imap.on('newMailAvailable', this._updateMessageList)
     this._imap.on('mailboxUpdated', this._updateTrayBadge)
     this._imap.on('error', this._handleImapError)
 
-    await this._imap.init(this.config.imap)
+    await this._imap.init()
 
     await this._updateTrayBadge()
   }
@@ -111,8 +111,9 @@ class App {
 
     this._imap.terminate()
 
-    setTimeout(() => {
-      this._initImap()
+    setTimeout(async () => {
+      await this._imap.init()
+      await this._updateTrayBadge()
     }, 3000)
   }
 }

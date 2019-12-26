@@ -5,15 +5,17 @@ import { simpleParser } from 'mailparser'
 import streamToBuffer from './streamToBuffer'
 
 class IMAPGateway extends EventEmitter {
-  constructor () {
+  constructor (config) {
     super()
 
     this._handleMailboxUpdate = this._handleMailboxUpdate.bind(this)
     this._handleError = this._handleError.bind(this)
+
+    this.config = config
   }
 
-  async init (config) {
-    await this._connect(config)
+  async init () {
+    await this._connect()
     await this._openMailbox('INBOX', true)
   }
 
@@ -46,14 +48,14 @@ class IMAPGateway extends EventEmitter {
     }
   }
 
-  _connect (config) {
+  _connect () {
     return new Promise((resolve, reject) => {
       this._imapConnection = new Imap({
-        ...config,
+        ...this.config,
         // https://github.com/mscdex/node-imap/issues/724
         tlsOptions: {
-          servername: config.host,
-          ...config.tlsOptions
+          servername: this.config.host,
+          ...this.config.tlsOptions
         }
       })
 
