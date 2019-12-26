@@ -90,9 +90,9 @@ class App {
 
     const unreadMessages = await this._imap.fetchUnreadMessageHeaders()
     // 新しい順に並び替える
-    const messageList = unreadMessages.reverse()
+    unreadMessages.reverse()
 
-    this._notificationWindowManager.updateMessageList(messageList)
+    this._notificationWindowManager.updateMessageList(unreadMessages)
     this._notificationWindowManager.updateLoading(false)
   }
 
