@@ -109,7 +109,7 @@ class App {
     console.warn('IMAP Error occurred. Reconnecting in 3 seconds.')
     console.warn(err)
 
-    this._imap._disconnect()
+    this._imap.terminate()
 
     setTimeout(() => {
       this._initImap()
