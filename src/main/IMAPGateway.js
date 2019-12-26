@@ -24,6 +24,8 @@ class IMAPGateway extends EventEmitter {
 
   async fetchUnreadMessageHeaders () {
     const uids = await this._fetchUnreadMessageUids()
+    if (uids.length === 0) return []
+
     const messages = await this._fetchMessages(uids, 'HEADER.FIELDS (From To Date Subject)')
 
     return messages.map(({ attributes, bodies }) => ({
