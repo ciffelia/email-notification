@@ -4,7 +4,7 @@ import Imap from 'imap'
 import { simpleParser } from 'mailparser'
 import streamToBuffer from './streamToBuffer'
 
-class IMAPGateway extends EventEmitter {
+class ImapGateway extends EventEmitter {
   constructor (config) {
     super()
 
@@ -181,4 +181,4 @@ class IMAPGateway extends EventEmitter {
   }
 }
 
-export default IMAPGateway
+export default ImapGateway

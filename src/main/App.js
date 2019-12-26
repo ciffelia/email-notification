@@ -3,7 +3,7 @@ import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-buil
 
 import NotificationWindowManager from './NotificationWindowManager'
 import DetailWindowManager from './DetailWindowManager'
-import IMAPGateway from './IMAPGateway'
+import ImapGateway from './ImapGateway'
 import TrayService from './TrayService'
 import isProduction from './isProduction'
 
@@ -77,7 +77,7 @@ class App {
     this._imaps = []
 
     for (const imapConfig of this.config.imap) {
-      const imap = new IMAPGateway(imapConfig)
+      const imap = new ImapGateway(imapConfig)
 
       imap.on('newMailAvailable', this._updateMessageList)
       imap.on('mailboxUpdated', this._updateTrayBadge)
