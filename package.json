@@ -1,6 +1,11 @@
 {
   "name": "email-notification",
   "version": "0.1.0",
+  "author": "Ciffelia <mc.prince.0203@gmail.com> (https://ciffelia.com/)",
+  "repository": "github:ciffelia/email-notification",
+  "homepage": "https://github.com/ciffelia/email-notification#readme",
+  "bugs": "https://github.com/ciffelia/email-notification/issues",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "electron:serve": "vue-cli-service electron:serve",
