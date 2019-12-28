@@ -68,7 +68,7 @@ export default {
     },
     showMessageDetail (message) {
       ipcRenderer.send('showMessageDetail', {
-        accountId: message.imapAccountId,
+        imapAccountId: message.imapAccountId,
         uid: message.attributes.uid
       })
     },

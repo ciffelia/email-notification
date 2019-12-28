@@ -50,10 +50,10 @@ class App {
 
     await this._notificationWindowManager.init()
 
-    ipcMain.on('showMessageDetail', async (e, { accountId, uid }) => {
+    ipcMain.on('showMessageDetail', async (e, { imapAccountId, uid }) => {
       const [window, message] = await Promise.all([
         this._detailWindowManager.createWindow(),
-        this._imaps[accountId].fetchMessage(uid)
+        this._imaps[imapAccountId].fetchMessage(uid)
       ])
 
       this._detailWindowManager.showMessage(window, message)
