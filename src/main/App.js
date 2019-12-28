@@ -56,12 +56,16 @@ class App {
         this._imaps[imapAccountId].fetchMessage(uid)
       ])
 
-      this._detailWindowManager.showMessage(window, message)
+      this._detailWindowManager.showMessage(window, { imapAccountId, ...message })
     })
   }
 
   async _initDetailWindow () {
     this._detailWindowManager = new DetailWindowManager(this.winURL)
+
+    ipcMain.on('markMessageAsRead', async (e, { imapAccountId, uid }) => {
+      await this._imaps[imapAccountId].markMessageAsRead(uid)
+    })
   }
 
   async _initTray () {

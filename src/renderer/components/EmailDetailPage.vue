@@ -14,7 +14,7 @@
       <EmailBody v-if="message === null" loading/>
       <EmailBody v-else :message="message"/>
     </template>
-    <EmailFooter/>
+    <EmailFooter @markAsReadClick="markMessageAsRead()" v-if="!alreadyMarkedAsRead"/>
   </EmailCard>
 </template>
 
@@ -37,12 +37,20 @@ export default {
   },
   data () {
     return {
-      message: null
+      message: null,
+      alreadyMarkedAsRead: false
     }
   },
   methods: {
     updateMessage (e, message) {
       this.message = message
+    },
+    markMessageAsRead () {
+      ipcRenderer.send('markMessageAsRead', {
+        imapAccountId: this.message.imapAccountId,
+        uid: this.message.attributes.uid
+      })
+      this.alreadyMarkedAsRead = true
     },
     closePage () {
       window.close()

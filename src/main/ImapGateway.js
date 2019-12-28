@@ -19,7 +19,7 @@ class ImapGateway extends EventEmitter {
 
   async init () {
     await this._connect()
-    await this._openMailbox('INBOX', true)
+    await this._openMailbox('INBOX')
   }
 
   terminate () {
@@ -49,6 +49,11 @@ class ImapGateway extends EventEmitter {
       attributes: messages[0].attributes,
       body: messages[0].bodies[0].parsed
     }
+  }
+
+  async markMessageAsRead (uid) {
+    const _addFlags = util.promisify(this._imapConnection.addFlags)
+    return _addFlags.call(this._imapConnection, uid, 'Seen')
   }
 
   _connect () {
@@ -108,7 +113,7 @@ class ImapGateway extends EventEmitter {
   }
 
   async _fetchMessages (uids, bodies = '') {
-    const imapFetch = this._imapConnection.fetch(uids, { bodies })
+    const imapFetch = this._imapConnection.fetch(uids, { markSeen: false, bodies })
     return this._processImapFetch(imapFetch)
   }
 
