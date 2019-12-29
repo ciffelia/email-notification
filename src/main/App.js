@@ -80,7 +80,7 @@ class App {
   async _initImap () {
     this._imaps = []
 
-    for (const imapConfig of this.config.imap) {
+    const initImap = async imapConfig => {
       const imap = new ImapGateway(imapConfig)
 
       imap.on('newMailAvailable', this._updateMessageList)
@@ -98,6 +98,8 @@ class App {
       this._imaps.push(imap)
     }
 
+    await Promise.all(this.config.imap.map(initImap))
+
     await this._updateTrayBadge()
   }
 
@@ -106,14 +108,16 @@ class App {
 
     const unreadMessages = []
 
-    for (const [i, imap] of this._imaps.entries()) {
-      if (!imap.isReady) continue
+    const fetchUnreadMessages = async (imap, i) => {
+      if (!imap.isReady) return
 
       const messages = await imap.fetchUnreadMessageHeaders()
       unreadMessages.push(
         ...messages.map(message => ({ imapAccountId: i, ...message }))
       )
     }
+
+    await Promise.all(this._imaps.map(fetchUnreadMessages))
 
     // 新しい順(日時降順)に並び替える
     unreadMessages.sort((a, b) => {
@@ -127,10 +131,12 @@ class App {
   async _updateTrayBadge () {
     let unreadCount = 0
 
-    for (const imap of this._imaps) {
-      if (!imap.isReady) continue
+    const countUnreadMessages = async imap => {
+      if (!imap.isReady) return
       unreadCount += await imap.countUnreadMessages()
     }
+
+    await Promise.all(this._imaps.map(countUnreadMessages))
 
     if (unreadCount === 0) {
       this._trayService.hideBadge()
