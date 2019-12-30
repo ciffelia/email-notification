@@ -23,7 +23,7 @@ class DetailWindowManager {
       }
     })
 
-    newWindow.on('will-navigate', (e, url) => {
+    newWindow.webContents.on('will-navigate', (e, url) => {
       shell.openExternal(url)
       e.preventDefault()
     })
