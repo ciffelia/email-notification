@@ -100,6 +100,7 @@ class App {
 
     await Promise.all(this.config.imap.map(initImap))
 
+    setInterval(this._updateTrayBadge, 15 * 1000)
     await this._updateTrayBadge()
   }
 
