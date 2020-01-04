@@ -73,7 +73,7 @@ export default {
       })
     },
     showWindow () {
-      remote.getCurrentWindow().show()
+      remote.getCurrentWindow().showInactive()
     },
     hideWindow () {
       remote.getCurrentWindow().hide()
