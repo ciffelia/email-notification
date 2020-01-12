@@ -8,6 +8,11 @@ module.exports = {
       mainProcessFile: 'src/main/index.js',
       mainProcessWatch: ['src/main', 'public'],
       outputDir: 'dist',
+      builderOptions: {
+        directories: {
+          buildResources: 'dist'
+        }
+      }
     }
   }
 }
