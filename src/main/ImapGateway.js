@@ -102,6 +102,7 @@ class ImapGateway extends EventEmitter {
     this._imapConnection.off('error', this._handleError)
 
     this._imapConnection.destroy()
+    this._imapConnection = null
   }
 
   async _openMailbox (path, readOnly) {
