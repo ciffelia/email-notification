@@ -26,6 +26,12 @@ class ImapGateway extends EventEmitter {
 
   terminate () {
     this._disconnect()
+
+    this._imapConnection.off('close', this._handleClose)
+    this._imapConnection.off('error', this._handleError)
+    this._imapConnection.on('error', () => {})
+    this._imapConnection = null
+    this.isReady = false
   }
 
   async countUnreadMessages () {
@@ -98,11 +104,8 @@ class ImapGateway extends EventEmitter {
     this._imapConnection.off('mail', this._handleMailboxUpdate)
     this._imapConnection.off('expunge', this._handleMailboxUpdate)
     this._imapConnection.off('update', this._handleMailboxUpdate)
-    this._imapConnection.off('close', this._handleClose)
-    this._imapConnection.off('error', this._handleError)
 
     this._imapConnection.destroy()
-    this._imapConnection = null
   }
 
   async _openMailbox (path, readOnly) {
@@ -189,7 +192,6 @@ class ImapGateway extends EventEmitter {
     if (this._imapConnection._tmrKeepalive) {
       clearTimeout(this._imapConnection._tmrKeepalive)
     }
-    this._disconnect()
 
     this.emit('error', err)
   }

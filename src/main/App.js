@@ -150,6 +150,8 @@ class App {
     console.warn('IMAP Error occurred. Reconnecting in 3 seconds.')
     console.warn(err)
 
+    imap.terminate()
+
     setTimeout(async () => {
       try {
         await imap.init()
