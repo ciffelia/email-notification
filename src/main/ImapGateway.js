@@ -188,6 +188,8 @@ class ImapGateway extends EventEmitter {
     if (this._imapConnection._tmrKeepalive) {
       clearTimeout(this._imapConnection._tmrKeepalive)
     }
+    this._disconnect()
+
     this.emit('error', err)
   }
 }
