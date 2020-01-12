@@ -3,6 +3,7 @@ import util from 'util'
 import Imap from 'imap'
 import { simpleParser } from 'mailparser'
 import streamToBuffer from './streamToBuffer'
+import isProduction from './isProduction'
 
 class ImapGateway extends EventEmitter {
   constructor (config) {
@@ -59,6 +60,7 @@ class ImapGateway extends EventEmitter {
   _connect () {
     return new Promise((resolve, reject) => {
       this._imapConnection = new Imap({
+        debug: isProduction ? undefined : console.log,
         ...this.config,
         // https://github.com/mscdex/node-imap/issues/724
         tlsOptions: {
