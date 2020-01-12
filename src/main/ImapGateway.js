@@ -21,6 +21,7 @@ class ImapGateway extends EventEmitter {
   async init () {
     await this._connect()
     await this._openMailbox('INBOX')
+    this.isReady = true
   }
 
   terminate () {
@@ -71,7 +72,6 @@ class ImapGateway extends EventEmitter {
 
       const readyHandler = () => {
         this._imapConnection.off('error', errorHandler)
-        this.isReady = true
         resolve()
       }
       const errorHandler = err => {
