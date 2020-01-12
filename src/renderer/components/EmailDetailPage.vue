@@ -1,7 +1,12 @@
 <template>
   <EmailCard display-mode="detail">
     <template>
-      <EmailHeader v-if="message === null" loading/>
+      <EmailHeader
+        v-if="message === null"
+        showCloseButton
+        windowDraggable
+        loading
+      />
       <EmailHeader
         v-else
         @click="closePage()"
