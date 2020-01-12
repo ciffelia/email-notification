@@ -184,6 +184,10 @@ class ImapGateway extends EventEmitter {
   }
 
   _handleError (err) {
+    // Fix https://github.com/mscdex/node-imap/issues/487
+    if (this._imapConnection._tmrKeepalive) {
+      clearTimeout(this._imapConnection._tmrKeepalive)
+    }
     this.emit('error', err)
   }
 }
