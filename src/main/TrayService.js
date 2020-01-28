@@ -10,12 +10,11 @@ class TrayService extends EventEmitter {
     this._handleClick = this._handleClick.bind(this)
     this._handleExitClick = this._handleExitClick.bind(this)
 
-    this._iconPath = path.join(__static, 'icon.png')
-    this._iconWithBadgePath = path.join(__static, 'icon-with-badge.png')
+    this._iconPath = this._getIconPath()
   }
 
   init () {
-    this._tray = new Tray(this._iconPath)
+    this._tray = new Tray(this._iconPath.default)
     this._tray.setToolTip('email-notification')
 
     const menu = Menu.buildFromTemplate([
@@ -27,11 +26,25 @@ class TrayService extends EventEmitter {
   }
 
   showBadge () {
-    this._tray.setImage(this._iconWithBadgePath)
+    this._tray.setImage(this._iconPath.badge)
   }
 
   hideBadge () {
-    this._tray.setImage(this._iconPath)
+    this._tray.setImage(this._iconPath.default)
+  }
+
+  _getIconPath () {
+    if (process.platform === 'win32') {
+      return {
+        default: path.join(__static, 'icon.ico'),
+        badge: path.join(__static, 'icon-with-badge.ico')
+      }
+    } else {
+      return {
+        default: path.join(__static, 'icon.png'),
+        badge: path.join(__static, 'icon-with-badge.png')
+      }
+    }
   }
 
   _handleClick () {
