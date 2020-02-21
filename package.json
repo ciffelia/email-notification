@@ -21,7 +21,7 @@
     "imap": "^0.8.19",
     "luxon": "^1.22.0",
     "mailparser": "^2.7.7",
-    "uikit": "^3.3.0",
+    "uikit": "^3.3.2",
     "vue": "^2.6.11"
   },
   "devDependencies": {
