@@ -23,6 +23,8 @@ class DetailWindowManager {
       }
     })
 
+    if (!isProduction) newWindow.webContents.openDevTools()
+
     newWindow.webContents.on('will-navigate', (e, url) => {
       shell.openExternal(url)
       e.preventDefault()
