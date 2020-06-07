@@ -17,34 +17,34 @@
   },
   "main": "background.js",
   "dependencies": {
-    "core-js": "^3.6.4",
+    "core-js": "^3.6.5",
     "imap": "^0.8.19",
-    "luxon": "^1.22.0",
+    "luxon": "^1.24.1",
     "mailparser": "^2.7.7",
-    "uikit": "^3.3.2",
+    "uikit": "^3.5.3",
     "vue": "^2.6.11"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-optional-chaining": "^7.8.3",
-    "@vue/cli-plugin-babel": "^4.2.2",
-    "@vue/cli-plugin-eslint": "^4.2.2",
-    "@vue/cli-service": "^4.2.2",
+    "@babel/plugin-proposal-optional-chaining": "^7.10.1",
+    "@vue/cli-plugin-babel": "^4.4.1",
+    "@vue/cli-plugin-eslint": "^4.4.1",
+    "@vue/cli-service": "^4.4.1",
     "@vue/eslint-config-standard": "^5.1.2",
-    "babel-eslint": "^10.0.3",
-    "electron": "^7.1.13",
+    "babel-eslint": "^10.1.0",
+    "electron": "^7.3.1",
     "electron-icon-builder": "^1.0.2",
     "eslint": "^6.8.0",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "eslint-plugin-vue": "^6.2.1",
-    "sass": "^1.25.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "sass": "^1.26.8",
     "sass-loader": "^8.0.2",
-    "vue-cli-plugin-electron-builder": "^1.4.5",
+    "vue-cli-plugin-electron-builder": "^1.4.6",
     "vue-template-compiler": "^2.6.11"
   },
   "browserslist": [
-    "Electron 7.1.4"
+    "Electron 7.3.1"
   ]
 }
